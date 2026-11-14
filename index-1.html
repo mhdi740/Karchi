@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="کارچی؛ بازار تخصصی تعمیرگاه‌ها و قطعات خودرو">
+<title>کارچی | بازار تخصصی خودرو</title>
+<style>
+:root{--navy:#10243a;--blue:#1769aa;--orange:#f39b36;--bg:#f4f7fa;--ink:#182433;--muted:#64748b}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+header{background:var(--navy);color:#fff;padding:18px 16px}
+.wrap{max-width:980px;margin:auto;padding:0 14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:25px;font-weight:900;color:#fff}.logo span{color:var(--orange)}
+nav a{color:#eaf2f8;text-decoration:none;margin-right:14px;font-size:14px}
+.hero{padding:34px 0 28px;background:linear-gradient(135deg,#10243a,#1b527a);color:white}
+.hero h1{font-size:25px;margin:0 0 8px}.hero p{margin:0 0 18px;color:#dce9f3}
+.search{display:flex;gap:8px;flex-wrap:wrap}.search input{flex:1;min-width:180px;padding:13px;border:0;border-radius:10px;font:inherit}
+button,.btn{border:0;border-radius:10px;padding:11px 16px;background:var(--orange);color:#17283a;font:inherit;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+main{padding:22px 0}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px}
+.action{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.action strong{display:block;font-size:17px}.action small{color:var(--muted)}
+h2{font-size:20px;margin:22px 0 12px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{background:#e4edf5;color:#23445f}.filters button.active{background:var(--navy);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:#fff;border:1px solid #e3eaf0;border-radius:14px;padding:15px}
+.tag{display:inline-block;background:#fff2df;color:#8a4b00;border-radius:20px;padding:2px 9px;font-size:12px}
+.card h3{margin:8px 0 4px;font-size:17px}.muted{color:var(--muted);font-size:13px}
+form{background:#fff;border:1px solid #e3eaf0;border-radius:14px;padding:16px;display:grid;gap:10px}
+label{font-size:14px;font-weight:bold}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:white}
+textarea{min-height:85px}footer{background:var(--navy);color:#dbe7f0;padding:20px;text-align:center;margin-top:25px;font-size:13px}
+.notice{background:#fff7e8;border:1px solid #f4d39d;border-radius:10px;padding:12px;font-size:13px;margin-top:12px}
+@media(min-width:650px){.actions{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+<header><div class="wrap top"><div class="logo">کار<span>چی</span></div><nav><a href="#ads">آگهی‌ها</a><a href="#submit">ثبت آگهی</a></nav></div></header>
+<section class="hero"><div class="wrap"><h1>تعمیرگاه و قطعه موردنظرت رو پیدا کن</h1><p>بازار تخصصی خدمات و قطعات خودرو</p><div class="search"><input id="q" placeholder="مثلاً تعمیرگاه برق خودرو یا قطعه پژو ۲۰۶"><button onclick="searchAds()">جست‌وجو</button></div></div></section>
+<main class="wrap">
+<div class="actions">
+<div class="action"><strong>🔧 تعمیرگاه‌ها</strong><small>تعمیرکار و خدمات خودرو را پیدا کن</small></div>
+<div class="action"><strong>⚙️ قطعات خودرو</strong><small>قطعه موردنیازت را جست‌وجو کن</small></div>
+</div>
+<section id="ads"><h2>آگهی‌های کارچی</h2><div class="filters"><button class="active" onclick="filterAds('همه',this)">همه</button><button onclick="filterAds('تعمیرگاه',this)">تعمیرگاه</button><button onclick="filterAds('قطعه',this)">قطعات</button></div><div class="grid" id="list"></div></section>
+<section id="submit"><h2>ثبت آگهی رایگان</h2><form id="adForm">
+<div><label for="type">نوع آگهی</label><select id="type"><option>تعمیرگاه</option><option>قطعه</option></select></div>
+<div><label for="title">عنوان آگهی</label><input id="title" required placeholder="مثلاً تعمیرگاه تخصصی برق خودرو"></div>
+<div><label for="city">شهر / محله</label><input id="city" required placeholder="مثلاً شهرقدس"></div>
+<div><label for="phone">شماره تماس</label><input id="phone" required inputmode="tel" placeholder="شماره تماس"></div>
+<div><label for="desc">توضیحات</label><textarea id="desc" placeholder="توضیحات آگهی"></textarea></div>
+<button type="submit">ثبت آگهی</button></form>
+<div class="notice">این نسخه نمایشی است. آگهی‌ها فقط در همین مرورگر ذخیره می‌شوند و قبل از انتشار عمومی باید به سامانه مدیریت و پایگاه داده متصل شوند.</div></section>
+</main>
+<footer>کارچی | بازار تخصصی تعمیرگاه‌ها و قطعات خودرو<br>نسخه اولیه آزمایشی</footer>
+<script>
+const starter=[
+{type:'تعمیرگاه',title:'نمونه تعمیرگاه مکانیکی',city:'شهرقدس',desc:'پذیرش انواع خدمات مکانیکی خودرو',phone:'—'},
+{type:'قطعه',title:'نمونه آگهی قطعات خودرو',city:'قلعه‌حسن‌خان',desc:'برای ثبت آگهی واقعی، اطلاعات خود را وارد کنید',phone:'—'}
+];
+function getAds(){try{return JSON.parse(localStorage.getItem('karchi_ads')||'null')||starter}catch(e){return starter}}
+function render(items=getAds()){document.getElementById('list').innerHTML=items.map(a=>`<article class="card"><span class="tag">${a.type}</span><h3>${esc(a.title)}</h3><div class="muted">📍 ${esc(a.city)}</div><p>${esc(a.desc||'')}</p><div class="muted">تماس: ${esc(a.phone||'—')}</div></article>`).join('')||'<p>آگهی‌ای پیدا نشد.</p>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function filterAds(type,btn){document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(type==='همه'?getAds():getAds().filter(a=>a.type===type))}
+function searchAds(){let q=document.getElementById('q').value.trim();render(getAds().filter(a=>(a.title+a.city+a.desc+a.type).includes(q)))}
+document.getElementById('adForm').addEventListener('submit',e=>{e.preventDefault();let ads=getAds();ads.unshift({type:type.value,title:title.value,city:city.value,phone:phone.value,desc:desc.value});localStorage.setItem('karchi_ads',JSON.stringify(ads));e.target.reset();render();alert('آگهی در همین مرورگر ذخیره شد. این ثبت هنوز عمومی نیست.')});
+render();
+</script></body></html>
