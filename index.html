@@ -66,3 +66,109 @@ function searchAds(){let q=document.getElementById('q').value.trim();render(getA
 document.getElementById('adForm').addEventListener('submit',e=>{e.preventDefault();let ads=getAds();ads.unshift({type:type.value,title:title.value,city:city.value,phone:phone.value,desc:desc.value});localStorage.setItem('karchi_ads',JSON.stringify(ads));e.target.reset();render();alert('آگهی در همین مرورگر ذخیره شد. این ثبت هنوز عمومی نیست.')});
 render();
 </script></body></html>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDmc-0A-uFMkamliO59sQWOFem9II676YM",
+  authDomain: "karchi-2be05.firebaseapp.com",
+  projectId: "karchi-2be05",
+  storageBucket: "karchi-2be05.firebasestorage.app",
+  messagingSenderId: "922938333304",
+  appId: "1:922938333304:web:4a6a8fb0ce5ca2af95f58d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let allAds = [];
+
+function esc(s) {
+  return String(s || "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  }[c]));
+}
+
+function render(items = allAds) {
+  const list = document.getElementById("list");
+  list.innerHTML = items.map(a => `
+    <article class="card">
+      <span class="tag">${esc(a.type)}</span>
+      <h3>${esc(a.title)}</h3>
+      <div class="muted">📍 ${esc(a.city)}</div>
+      <p>${esc(a.desc || "")}</p>
+      <div class="muted">تماس: ${esc(a.phone || "—")}</div>
+    </article>
+  `).join("") || "<p>هنوز آگهی‌ای ثبت نشده است.</p>";
+}
+
+function filterAds(type, btn) {
+  document.querySelectorAll(".filters button")
+    .forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  render(type === "همه"
+    ? allAds
+    : allAds.filter(a => a.type === type));
+}
+
+function searchAds() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  render(allAds.filter(a =>
+    [a.title, a.city, a.desc, a.type]
+      .join(" ").toLowerCase().includes(q)
+  ));
+}
+
+window.filterAds = filterAds;
+window.searchAds = searchAds;
+
+// دریافت زنده آگهی‌ها از Firebase
+onSnapshot(collection(db, "ads"), snapshot => {
+  allAds = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+  render();
+}, error => {
+  console.error(error);
+  alert("خطا در دریافت آگهی‌ها. تنظیمات Firebase را بررسی کنید.");
+});
+
+// ثبت آگهی جدید
+document.getElementById("adForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true;
+
+  try {
+    await addDoc(collection(db, "ads"), {
+      type: document.getElementById("type").value,
+      title: document.getElementById("title").value.trim(),
+      city: document.getElementById("city").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      desc: document.getElementById("desc").value.trim(),
+      createdAt: serverTimestamp()
+    });
+
+    e.target.reset();
+    alert("آگهی با موفقیت در کارچی ثبت شد.");
+  } catch (error) {
+    console.error(error);
+    alert("ثبت آگهی انجام نشد. تنظیمات پایگاه داده را بررسی کنید.");
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
